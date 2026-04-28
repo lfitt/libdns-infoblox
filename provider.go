@@ -15,6 +15,7 @@ type Provider struct {
 	Version  string `json:"version,omitempty"`
 	Username string `json:"username,omitempty"`
 	Password string `json:"password,omitempty"`
+	View     string `json:"view,omitempty"`
 	logger   *zap.Logger
 }
 

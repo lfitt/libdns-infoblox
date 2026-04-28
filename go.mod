@@ -1,4 +1,4 @@
-module github.com/bootswithdefer/libdns-infoblox
+module github.com/lfitt/libdns-infoblox
 
 go 1.24.7
 
