@@ -96,7 +96,7 @@ func (p *Provider) AppendRecords(_ context.Context, zone string, records []libdn
 		var recRR = rec.RR()
 		switch recRR.Type {
 		case "CNAME":
-			record, err := objMgr.CreateCNAMERecord("default", recRR.Data, recRR.Name+"."+legitzone, true, uint32(recRR.TTL.Seconds()), "", nil)
+			record, err := objMgr.CreateCNAMERecord(zone, recRR.Data, recRR.Name+"."+legitzone, true, uint32(recRR.TTL.Seconds()), "", nil)
 			if err != nil {
 				p.log().Error("failed to create CNAME record", zap.String("name", recRR.Name), zap.Error(err))
 				return added, fmt.Errorf("failed to create CNAME record %s: %w", recRR.Name, err)
@@ -107,7 +107,7 @@ func (p *Provider) AppendRecords(_ context.Context, zone string, records []libdn
 				Data: *record.Canonical,
 			})
 		case "TXT":
-			record, err := objMgr.CreateTXTRecord("default", recRR.Name+"."+legitzone, recRR.Data, uint32(recRR.TTL.Seconds()), true, "", nil)
+			record, err := objMgr.CreateTXTRecord(zone, recRR.Name+"."+legitzone, recRR.Data, uint32(recRR.TTL.Seconds()), true, "", nil)
 			if err != nil {
 				p.log().Error("failed to create TXT record", zap.String("name", recRR.Name), zap.Error(err))
 				return added, fmt.Errorf("failed to create TXT record %s: %w", recRR.Name, err)
@@ -143,9 +143,9 @@ func (p *Provider) SetRecords(_ context.Context, zone string, records []libdns.R
 		var recRR = rec.RR()
 		switch recRR.Type {
 		case "CNAME":
-			record, err := objMgr.GetCNAMERecord("default", "", recRR.Name)
+			record, err := objMgr.GetCNAMERecord(zone, "", recRR.Name)
 			if err != nil {
-				record, err = objMgr.CreateCNAMERecord("default", recRR.Data, recRR.Name+"."+legitzone, true, uint32(recRR.TTL.Seconds()), "", nil)
+				record, err = objMgr.CreateCNAMERecord(zone, recRR.Data, recRR.Name+"."+legitzone, true, uint32(recRR.TTL.Seconds()), "", nil)
 				if err != nil {
 					p.log().Error("failed to create CNAME record", zap.String("name", recRR.Name), zap.Error(err))
 					return updated, fmt.Errorf("failed to create CNAME record %s: %w", recRR.Name, err)
@@ -163,9 +163,9 @@ func (p *Provider) SetRecords(_ context.Context, zone string, records []libdns.R
 				Data: *record.Canonical,
 			})
 		case "TXT":
-			record, err := objMgr.GetTXTRecord("default", recRR.Name)
+			record, err := objMgr.GetTXTRecord(zone, recRR.Name)
 			if err != nil {
-				record, err = objMgr.CreateTXTRecord("default", recRR.Name+"."+legitzone, recRR.Data, uint32(recRR.TTL.Seconds()), true, "", nil)
+				record, err = objMgr.CreateTXTRecord(zone, recRR.Name+"."+legitzone, recRR.Data, uint32(recRR.TTL.Seconds()), true, "", nil)
 				if err != nil {
 					p.log().Error("failed to create TXT record", zap.String("name", recRR.Name), zap.Error(err))
 					return updated, fmt.Errorf("failed to create TXT record %s: %w", recRR.Name, err)
@@ -207,7 +207,7 @@ func (p *Provider) DeleteRecords(_ context.Context, zone string, records []libdn
 		var recRR = rec.RR()
 		switch recRR.Type {
 		case "CNAME":
-			record, err := objMgr.GetCNAMERecord("default", "", recRR.Name+"."+legitzone)
+			record, err := objMgr.GetCNAMERecord(zone, "", recRR.Name+"."+legitzone)
 			if err != nil {
 				p.log().Error("failed to get CNAME record for deletion", zap.String("name", recRR.Name), zap.Error(err))
 				return deleted, fmt.Errorf("failed to get CNAME record %s: %w", recRR.Name, err)
@@ -223,7 +223,7 @@ func (p *Provider) DeleteRecords(_ context.Context, zone string, records []libdn
 				Data: *record.Canonical,
 			})
 		case "TXT":
-			record, err := objMgr.GetTXTRecord("default", recRR.Name+"."+legitzone)
+			record, err := objMgr.GetTXTRecord(zone, recRR.Name+"."+legitzone)
 			if err != nil {
 				p.log().Error("failed to get TXT record for deletion", zap.String("name", recRR.Name), zap.Error(err))
 				return deleted, fmt.Errorf("failed to get TXT record %s: %w", recRR.Name, err)
