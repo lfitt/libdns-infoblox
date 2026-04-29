@@ -9,6 +9,7 @@ The following parameters are used to authenticate with the Infoblox API:
 * `Version` - The version of the Infoblox API, e.g. `2.9.7`
 * `Username` - The username to authenticate with
 * `Password` - The password to authenticate with
+* `View` - The view to interact with
 
 ## Logging
 This library supports Caddy-compatible logging via `go.uber.org/zap`. To enable logging, call `SetLogger()` on the provider instance with a zap logger. If no logger is set, logging is silently disabled.
@@ -19,6 +20,7 @@ provider := &infoblox.Provider{
     Version:  "2.9.7",
     Username: "admin",
     Password: "password",
+    View:     "default",
 }
 provider.SetLogger(logger) // Pass your zap.Logger instance
 ```
